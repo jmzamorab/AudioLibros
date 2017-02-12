@@ -38,9 +38,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.TwitterAuthProvider;
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
 import es.upv.master.audiolibros.singletons.FirebaseAuthSingleton;
+import io.fabric.sdk.android.Fabric;
 
 import android.support.v4.app.FragmentActivity;
 
@@ -120,6 +128,23 @@ public class CustomLoginActivity extends FragmentActivity
             }
         });
 
+        //Twitter
+        btnTwitter = (TwitterLoginButton) findViewById(R.id.btnTwitter);
+        btnTwitter.setEnabled(true);
+        btnTwitter.setCallback(new Callback<TwitterSession>() {
+            @Override
+            public void success(Result<TwitterSession> result) {
+                twitterAuth(result.data);
+            }
+
+            @Override
+            public void failure(TwitterException exception) {
+                showSnackbar(exception.getLocalizedMessage());
+            }
+        });
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(getString(R.string.twitter_consumer_key), getString(R.string.twitter_consumer_secret));
+        Fabric.with(this, new Twitter(authConfig));
+
         doLogin();
     }
 
@@ -156,6 +181,9 @@ public class CustomLoginActivity extends FragmentActivity
             case R.id.btnFacebook:
                 showProgress();
                 break;
+            case R.id.btnTwitter:
+                showProgress();
+                break;
         }
     }
 
@@ -178,7 +206,24 @@ public class CustomLoginActivity extends FragmentActivity
             }
         } else if (requestCode == btnFacebook.getRequestCode()) {
             callbackManager.onActivityResult(requestCode, resultCode, data);
+        } else if (requestCode == TwitterAuthConfig.DEFAULT_AUTH_REQUEST_CODE) {
+            btnTwitter.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    private void twitterAuth(TwitterSession session) {
+        AuthCredential credential = TwitterAuthProvider.getCredential(session.getAuthToken().token, session.getAuthToken().secret);
+        auth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (!task.isSuccessful()) {
+                    hideProgress();
+                    showSnackbar(task.getException().getLocalizedMessage());
+                } else {
+                    doLogin();
+                }
+            }
+        });
     }
 
     private void facebookAuth(AccessToken accessToken) {
