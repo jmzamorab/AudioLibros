@@ -55,13 +55,15 @@ public class LoginActivity extends AppCompatActivity {
                 if (currentUser.isEmailVerified()) {
                     gotoMain();
                 } else {
-                    android.app.AlertDialog.Builder alertDialogAbout = new android.app.AlertDialog.Builder(this);
+                    //TODO necesario hacerlo en 2º plano
+                    final android.app.AlertDialog.Builder alertDialogAbout = new android.app.AlertDialog.Builder(this);
                     alertDialogAbout.setMessage(R.string.verifyEmailMsg)
                             .setTitle(R.string.verifyEmailTit)
                             .setPositiveButton(R.string.okBtn, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     currentUser.sendEmailVerification();
                                     showAutenticationOptions();
+                                    dialog.dismiss();
                                 }
                             })
                             .setNegativeButton(R.string.cancelBtn, new DialogInterface.OnClickListener() {
@@ -69,6 +71,8 @@ public class LoginActivity extends AppCompatActivity {
                                     cleanPreferences();
                                     showAutenticationOptions();
                                     finish();
+                                    dialog.dismiss();
+
                                 }
                             })
                             .show();
@@ -87,6 +91,7 @@ public class LoginActivity extends AppCompatActivity {
         Intent i = new Intent(this, MainActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(i);
+        finish();
     }
 
 
@@ -96,6 +101,11 @@ public class LoginActivity extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == ResultCodes.OK) {
                 doLogin();
+                finish();
+            } else {
+                Intent i = new Intent(this, CustomLoginActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(i);
                 finish();
             }
         }

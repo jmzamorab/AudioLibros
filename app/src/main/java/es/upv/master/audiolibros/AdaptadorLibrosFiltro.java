@@ -55,10 +55,10 @@ public class AdaptadorLibrosFiltro extends AdaptadorLibros implements Observer{
         indiceFiltro = new ArrayList<Integer>();
         for (int i = 0; i < vectorSinFiltro.size(); i++) {
             Libro libroItem = vectorSinFiltro.get(i);//.elementAt(i);
-            if ((libroItem.titulo.toLowerCase().contains(busqueda) || libroItem.autor.toLowerCase().contains(busqueda))
-                    && (libroItem.genero.startsWith(genero))
-                    && (!novedad || (novedad && libroItem.novedad))
-                    && (!leido || (leido && libroItem.leido))) {
+            if ((libroItem.titulo.toLowerCase().contains(busqueda) || libroItem.getAutor().toLowerCase().contains(busqueda))
+                    && (libroItem.getGenero().startsWith(genero))
+                    && (!novedad || (novedad && libroItem.getNovedad()))
+                    && (!leido || (leido /*&& libro.leido*/))) {
                 librosSingleton.getVectorLibros().add(libroItem);
 
                 indiceFiltro.add(i);

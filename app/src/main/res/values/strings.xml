@@ -27,4 +27,6 @@
     <string name="error_google">Error al iniciar sesión con Google</string>
     <string name="error_empty">Por favor ingrese todos los campos</string>
     <string name="error_cancelled">Error, inicio de sesión cancelado</string>
+
+    <string name="loginFirebaseUI">Login FirebaseUI</string>
 </resources>
