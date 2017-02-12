@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">AudioLibros</string>
+    <string name="action_settings">Settings</string>
+    <string name="drawer_open">navigation drawer abierto</string>
+    <string name="drawer_close">navigation drawer cerrado</string>
+    <string name="welcome_message">Bienvenido, %s</string>
+    <string name="sign_out">Cerrar sesión</string>
+    <string name="warningEmailSend">Debe responder al eMail que se le ha remitido para confirmar que es usted</string>
+
+    <string name="facebook_application_id">170929993405025</string>
+    <string name="facebook_login_protocol_scheme">fb170929993405025</string>
+
+    <string name="twitter_consumer_key" translatable="false"> H5QFdhdpg1T8uwYtAyLltHkJj</string>
+    <string name="twitter_consumer_secret" translatable="false">NxD310ibfL2NYqZM0iAsq1nueUiWH11W1pmDFWNWL7pP4isqhw</string>
+
+    <string name="verifyEmailMsg">Verifique Cuenta de Correo</string>
+    <string name="verifyEmailTit">Revise su correo y pulse sobre el link, verificando que es correcta su cuenta</string>
+    <string name="okBtn">Aceptar</string>
+    <string name="cancelBtn">Cancelar</string>
+</resources>

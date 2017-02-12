@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="EditTextTunneado">
+        <attr name="dibujarRayas" format="boolean" />
+        <attr name="posicionNumeros" format="enum">
+            <enum name="derecha" value="0" />
+            <enum name="izquierda" value="1" />
+            <enum name="sin_numeros" value="2" />
+        </attr>
+        <attr name="colorNumeros" format="color" />
+        <attr name="tamanyoNumeros" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="ZoomSeekBar">
+        <attr name="altoNumeros" format="dimension" />
+        <attr name="altoRegla" format="dimension" />
+        <attr name="altoBar" format="dimension" />
+        <attr name="altoPalanca" format="dimension" />
+        <attr name="altoGuia" format="dimension" />
+        <attr name="anchoPalanca" format="dimension" />
+        <attr name="altoTexto" format="dimension" />
+        <attr name="colorTexto" format="color" />
+        <attr name="colorRegla" format="color" />
+        <attr name="colorPalanca" format="color" />
+        <attr name="colorGuia" format="color" />
+        <attr name="val" format="dimension" />
+        <attr name="valMin" format="dimension" />
+        <attr name="valMax" format="dimension" />
+        <attr name="escalaMin" format="integer" />
+        <attr name="escalaMax" format="integer" />
+        <attr name="escalaIni" format="integer" />
+        <attr name="escalaRaya" format="dimension" />
+        <attr name="escalaRayaLarga" format="dimension" />
+    </declare-styleable>
+</resources>
