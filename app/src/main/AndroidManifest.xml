@@ -13,7 +13,7 @@
             android:name="android.app.default_searchable"
             android:value="com.example.audiolibros.MainActivity" />
 
-        <activity android:name=".LoginActivity">
+        <activity android:name=".CustomLoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

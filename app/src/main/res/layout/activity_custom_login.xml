@@ -1,0 +1,92 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/loginContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_horizontal_margin"
+    tools:context="es.upv.master.audiolibros.LoginActivity">
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/wrapperEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/wrapperPassword">
+
+        <EditText
+            android:id="@+id/editTxtEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/login_msg_email"
+            android:inputType="textEmailAddress" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/wrapperPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/layoutEmailButtons">
+
+        <EditText
+            android:id="@+id/editTxtPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/login_msg_password"
+            android:inputType="textPassword" />
+    </android.support.design.widget.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutEmailButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <Button
+            android:id="@+id/btnSignin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:background="#d0021b"
+            android:onClick="signin"
+            android:padding="8dp"
+            android:text="@string/login_msg_signin"
+            android:textColor="#fff" />
+
+        <Button
+            android:id="@+id/btnSignup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#d0021b"
+            android:onClick="signup"
+            android:padding="8dp"
+            android:text="@string/login_msg_signup"
+            android:textColor="#fff" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutSocial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layoutEmailButtons"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/btnGoogle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp" /> <!--com.facebook.login.widget.LoginButton android:id="@+id/btnFacebook" android:padding="@dimen/activity_horizontal_margin" android:layout_margin="8dp" android:layout_width="match_parent" android:layout_height="wrap_content"/-->
+        <com.twitter.sdk.android.core.identity.TwitterLoginButton
+            android:id="@+id/btnTwitter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+</RelativeLayout>

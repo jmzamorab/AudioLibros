@@ -26,7 +26,7 @@ import es.upv.master.audiolibros.singletons.FirebaseAuthSingleton;
 public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 123;
     private FirebaseAuth auth;
-    private LibrosSharedPreferenceStorage preferenceStorage;
+    //private LibrosSharedPreferenceStorage preferenceStorage;
     private UserStorage userStorage;
     private final String KEY_EMAIL = "password";
 

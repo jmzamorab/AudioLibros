@@ -17,4 +17,14 @@
     <string name="verifyEmailTit">Revise su correo y pulse sobre el link, verificando que es correcta su cuenta</string>
     <string name="okBtn">Aceptar</string>
     <string name="cancelBtn">Cancelar</string>
+
+
+    <string name="login_msg_email">Correo electrónico</string>
+    <string name="login_msg_password">Contraseña</string>
+    <string name="login_msg_signin">Iniciar sesión</string>
+    <string name="login_msg_signup">Registrarse</string>
+    <string name="error_connection_failed">Error, fallo en la conexión </string>
+    <string name="error_google">Error al iniciar sesión con Google</string>
+    <string name="error_empty">Por favor ingrese todos los campos</string>
+    <string name="error_cancelled">Error, inicio de sesión cancelado</string>
 </resources>

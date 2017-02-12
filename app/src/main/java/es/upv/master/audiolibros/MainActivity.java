@@ -225,7 +225,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.menu_preferencias) {
             showPreferences();
             return true;
@@ -282,13 +281,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 showPreferences();
                 break;
             case R.id.nav_signout:
+                // ahora cierra de la nueva actividad personalizada
                 AuthUI.getInstance().signOut(this).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         userStorage.remove("provider");
                         userStorage.remove("email");
                         userStorage.remove("name");
-                        Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                        Intent i = new Intent(MainActivity.this, CustomLoginActivity.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(i);
                         finish();
@@ -296,21 +296,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 });
                 break;
         }
-        /*if (id == R.id.nav_todos) {
-            adaptador.setGenero("");
-                adaptador.notifyDataSetChanged();
-        } else if (id == R.id.nav_epico) {
-            adaptador.setGenero(Libro.G_EPICO);
-            adaptador.notifyDataSetChanged();
-        } else if (id == R.id.nav_XIX) {
-            adaptador.setGenero(Libro.G_S_XIX);
-            adaptador.notifyDataSetChanged();
-        } else if (id == R.id.nav_suspense) {
-            adaptador.setGenero(Libro.G_SUSPENSE);
-            adaptador.notifyDataSetChanged();
-        } else if (id == R.id.nav_preferencias) {
-            showPreferences();
-        }*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
