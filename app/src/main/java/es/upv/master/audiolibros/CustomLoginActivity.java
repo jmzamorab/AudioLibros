@@ -1,6 +1,7 @@
 package es.upv.master.audiolibros;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,21 +15,30 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
 import es.upv.master.audiolibros.singletons.FirebaseAuthSingleton;
-
+import android.support.v4.app.FragmentActivity;
 /**
  * Created by padres on 12/02/2017.
  */
 
-public class CustomLoginActivity extends Activity implements View.OnClickListener {
+public class CustomLoginActivity extends FragmentActivity
+        implements View.OnClickListener , GoogleApiClient.OnConnectionFailedListener{
     private LinearLayout layoutSocialButtons;
     private LinearLayout layoutEmailButtons;
     private TextInputLayout wrapperPassword;
@@ -43,6 +53,9 @@ public class CustomLoginActivity extends Activity implements View.OnClickListene
     private FirebaseAuth auth;
     FirebaseUser currentUser;
     private UserStorage userStorage;
+    private static final int RC_GOOGLE_SIGN_IN = 123;
+    private GoogleApiClient googleApiClient;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +71,15 @@ public class CustomLoginActivity extends Activity implements View.OnClickListene
         layoutSocialButtons = (LinearLayout) findViewById(R.id.layoutSocial);
         layoutEmailButtons = (LinearLayout) findViewById(R.id.layoutEmailButtons);
         auth = FirebaseAuthSingleton.getInstance().getAuth();
+
+        //Google
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).
+                requestIdToken(getString(R.string.default_web_client_id)).
+                requestEmail().build();
+        googleApiClient = new GoogleApiClient.Builder(this).
+                enableAutoManage(this, this).
+                addApi(Auth.GOOGLE_SIGN_IN_API, gso).
+                build();
         doLogin();
     }
 
@@ -88,11 +110,45 @@ public class CustomLoginActivity extends Activity implements View.OnClickListene
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.btnGoogle:
+                googleLogin();
+                break;
         }
+    }
+
+    public void googleLogin() {
+        showProgress();
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+        startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RC_GOOGLE_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if (result.isSuccess()) {
+                GoogleSignInAccount account = result.getSignInAccount();
+                googleAuth(account);
+            } else {
+                hideProgress();
+                showSnackbar(getResources().getString(R.string.error_google));
+            }
+        }
+    }
+
+    private void googleAuth(GoogleSignInAccount acct) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        auth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (!task.isSuccessful()) {
+                    hideProgress();
+                    showSnackbar(task.getException().getLocalizedMessage());
+                } else {
+                    doLogin();
+                }
+            }
+        });
     }
 
     private void showSnackbar(String message) {
@@ -155,5 +211,10 @@ public class CustomLoginActivity extends Activity implements View.OnClickListene
         } else {
             wrapperEmail.setError(getString(R.string.error_empty));
         }
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        showSnackbar(getString(R.string.error_connection_failed));
     }
 }
