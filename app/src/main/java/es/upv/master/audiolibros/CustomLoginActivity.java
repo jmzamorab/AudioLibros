@@ -187,6 +187,7 @@ public class CustomLoginActivity extends FragmentActivity
         }
     }
 
+
     public void googleLogin() {
         showProgress();
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
@@ -324,5 +325,12 @@ public class CustomLoginActivity extends FragmentActivity
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         showSnackbar(getString(R.string.error_connection_failed));
+    }
+
+    public void fireBaseUI(View view) {
+        Intent i = new Intent(this, LoginActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i);
+        finish();
     }
 }

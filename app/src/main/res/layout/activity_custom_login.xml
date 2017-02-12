@@ -88,6 +88,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp" />
+
+        <Button
+            android:id="@+id/btnFireBaseUI"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ff8901"
+            android:onClick="fireBaseUI"
+            android:padding="8dp"
+            android:text="@string/loginFirebaseUI"
+            android:textColor="#fff" />
     </LinearLayout>
 
     <ProgressBar

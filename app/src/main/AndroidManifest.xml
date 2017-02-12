@@ -32,6 +32,7 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+        <activity android:name=".LoginActivity"/>
         <activity android:name=".PreferenciasActivity" />
 
         <receiver android:name="MiAppWidgetProvider">
