@@ -80,7 +80,7 @@ public class CustomLoginActivity extends FragmentActivity
     private FirebaseAuth auth;
     private FirebaseUser currentUser;
     private UserStorage userStorage;
-    private FirebaseDatabase currentDB;
+    //private FirebaseDatabase currentDB;
     private static final int RC_GOOGLE_SIGN_IN = 123;
     private GoogleApiClient googleApiClient;
 

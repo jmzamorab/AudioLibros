@@ -14,10 +14,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 
 import es.upv.master.audiolibros.singletons.FirebaseAuthSingleton;
+import es.upv.master.audiolibros.singletons.FirebaseDBSingleton;
 
 /**
  * Created by padres on 06/02/2017.
@@ -41,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     private void doLogin() {
         final FirebaseUser currentUser = auth.getCurrentUser();
         if (currentUser != null) {
+            guardarUsuario(currentUser);
             String name = currentUser.getDisplayName();
             String email = currentUser.getEmail();
             String provider = currentUser.getProviders().get(0);
@@ -86,6 +92,20 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    void guardarUsuario(final FirebaseUser user) {
+        DatabaseReference userReference = FirebaseDBSingleton.getInstance().getUsersReference();
+        final DatabaseReference currentUserReference = userReference.child(user.getUid());
+        ValueEventListener userListener = new ValueEventListener() {
+            @Override public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    currentUserReference.setValue(new User(
+                            user.getDisplayName(), user.getEmail()));
+                }
+            }
+            @Override public void onCancelled(DatabaseError databaseError) {}
+        };
+        currentUserReference.addListenerForSingleValueEvent(userListener);
+    }
 
     private void gotoMain() {
         Intent i = new Intent(this, MainActivity.class);
