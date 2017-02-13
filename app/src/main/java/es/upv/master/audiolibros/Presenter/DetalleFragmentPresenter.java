@@ -53,7 +53,7 @@ public class DetalleFragmentPresenter implements OnValueListener, MediaPlayer.On
         mediaPlayer = new MediaPlayer();
 
         mediaPlayer.setOnPreparedListener(this);
-        Uri audio = Uri.parse(libro.urlAudio);
+        Uri audio = Uri.parse(libro.getUrlAudio());
         try {
             mediaPlayer.setDataSource(this.activity, audio);
             mediaPlayer.prepareAsync();

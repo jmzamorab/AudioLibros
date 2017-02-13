@@ -16,6 +16,7 @@ import es.upv.master.audiolibros.MainActivity;
 import es.upv.master.audiolibros.R;
 import es.upv.master.audiolibros.ZoomSeekBar;
 
+import static es.upv.master.audiolibros.R.id.autor;
 
 
 public class DetalleFragment extends Fragment implements DetalleFragmentPresenter.View, View.OnTouchListener{
@@ -72,9 +73,9 @@ public class DetalleFragment extends Fragment implements DetalleFragmentPresente
 
     @Override
     public void showLibro(Libro libro, ImageLoader imgLoader) {
-        ((TextView) vista.findViewById(R.id.titulo)).setText(libro.titulo);
-        ((TextView) vista.findViewById(R.id.autor)).setText(libro.autor);
-        ((NetworkImageView) vista.findViewById(R.id.portada)).setImageUrl(libro.urlImagen, imgLoader);
+        ((TextView) vista.findViewById(R.id.titulo)).setText(libro.getTitulo());
+        ((TextView) vista.findViewById(autor)).setText(libro.getAutor());
+        ((NetworkImageView) vista.findViewById(R.id.portada)).setImageUrl(libro.getUrlImagen(), imgLoader);
         vista.setOnTouchListener(this);
     }
 

@@ -16,6 +16,8 @@ import com.android.volley.toolbox.ImageLoader;
 import es.upv.master.audiolibros.singletons.LibrosSingleton;
 import es.upv.master.audiolibros.singletons.VolleySingleton;
 
+import static es.upv.master.audiolibros.R.id.titulo;
+
 public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHolder> {
     private LayoutInflater inflador; //Crea Layouts a partir del XML
     private Context contexto;
@@ -74,7 +76,7 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int posicion) {
         final Libro libroItem = libroSingleton.getVectorLibros().get(posicion);
-        holder.titulo.setText(libroItem.titulo);
+        holder.titulo.setText(libroItem.getTitulo());
         holder.itemView.setScaleX(1);
         holder.itemView.setScaleY(1);
         holder.itemView.setOnClickListener(new View.OnClickListener()
@@ -97,7 +99,7 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
         }
 
         );
-        volleySingleton.getLectorImagenes().get(libroItem.urlImagen, new ImageLoader.ImageListener() {
+        volleySingleton.getLectorImagenes().get(libroItem.getUrlImagen(), new ImageLoader.ImageListener() {
 
 
             @Override

@@ -39,6 +39,11 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.TwitterAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -48,6 +53,7 @@ import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
 import es.upv.master.audiolibros.singletons.FirebaseAuthSingleton;
+import es.upv.master.audiolibros.singletons.FirebaseDBSingleton;
 import io.fabric.sdk.android.Fabric;
 
 import android.support.v4.app.FragmentActivity;
@@ -69,10 +75,12 @@ public class CustomLoginActivity extends FragmentActivity
     private SignInButton btnGoogle;
     private LoginButton btnFacebook;
     private TwitterLoginButton btnTwitter;
+
     private CallbackManager callbackManager;
     private FirebaseAuth auth;
-    FirebaseUser currentUser;
+    private FirebaseUser currentUser;
     private UserStorage userStorage;
+    private FirebaseDatabase currentDB;
     private static final int RC_GOOGLE_SIGN_IN = 123;
     private GoogleApiClient googleApiClient;
 
@@ -90,7 +98,6 @@ public class CustomLoginActivity extends FragmentActivity
         container = (RelativeLayout) findViewById(R.id.loginContainer);
         layoutSocialButtons = (LinearLayout) findViewById(R.id.layoutSocial);
         layoutEmailButtons = (LinearLayout) findViewById(R.id.layoutEmailButtons);
-
         auth = FirebaseAuthSingleton.getInstance().getAuth();
         btnGoogle = (SignInButton) findViewById(R.id.btnGoogle);
         btnGoogle.setOnClickListener(this);
@@ -151,6 +158,7 @@ public class CustomLoginActivity extends FragmentActivity
     private void doLogin() {
         currentUser = auth.getCurrentUser();
         if (currentUser != null) {
+            guardarUsuario(currentUser);
             String name = currentUser.getDisplayName();
             String email = currentUser.getEmail();
             String provider = currentUser.getProviders().get(0);
@@ -333,4 +341,20 @@ public class CustomLoginActivity extends FragmentActivity
         startActivity(i);
         finish();
     }
+
+    void guardarUsuario(final FirebaseUser user) {
+        DatabaseReference userReference = FirebaseDBSingleton.getInstance().getUsersReference();
+        final DatabaseReference currentUserReference = userReference.child(user.getUid());
+        ValueEventListener userListener = new ValueEventListener() {
+            @Override public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    currentUserReference.setValue(new User(
+                            user.getDisplayName(), user.getEmail()));
+                }
+            }
+            @Override public void onCancelled(DatabaseError databaseError) {}
+        };
+        currentUserReference.addListenerForSingleValueEvent(userListener);
+    }
+
 }

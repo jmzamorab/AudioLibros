@@ -13,8 +13,9 @@ public class FirebaseDBSingleton {
     private static FirebaseDatabase dbFirebase;
     private final static String BOOKS_CHILD = "libros";
     private final static String USERS_CHILD = "usuarios";
-    private DatabaseReference usersReference;
-    private DatabaseReference booksReference;
+
+    private static DatabaseReference usersReference;
+    private static DatabaseReference booksReference;
 
     private FirebaseDBSingleton() {
 
@@ -32,7 +33,7 @@ public class FirebaseDBSingleton {
         return instance;
     }
 
-    public FirebaseDatabase getDB() {
+    public FirebaseDatabase getDbFirebase() {
         return dbFirebase;
     }
 

@@ -13,25 +13,20 @@ import java.util.Vector;
 public class Libro {
     private int colorVibrante = -1;
     private int colorApagado = -1;
-
     public int getColorVibrante() {
         return colorVibrante;
     }
-
     public void setColorVibrante(int colorVibrante) {
         this.colorVibrante = colorVibrante;
     }
-
     public int getColorApagado() {
         return colorApagado;
     }
-
     public void setColorApagado(int colorApagado) {
         this.colorApagado = colorApagado;
     }
 
-    public String titulo;
-
+    private  String titulo;
     private String autor;
     //public int recursoImagen;
     private String urlImagen;
