@@ -33,6 +33,8 @@ import es.upv.master.audiolibros.OpenDetailClickAction;
 import es.upv.master.audiolibros.R;
 import es.upv.master.audiolibros.SearchObservable;
 
+import static android.R.attr.animation;
+
 public class SelectorFragments extends Fragment implements Animation.AnimationListener{
     private Activity actividad;
     private RecyclerView recyclerView;
@@ -120,7 +122,14 @@ public class SelectorFragments extends Fragment implements Animation.AnimationLi
     @Override
     public void onResume() {
         ((MainActivity) getActivity()).mostrarElementos(true);
+        adaptador.activaEscuchadorLibros();
         super.onResume();
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        adaptador.desactivaEscuchadorLibros();
     }
 
     @Override
