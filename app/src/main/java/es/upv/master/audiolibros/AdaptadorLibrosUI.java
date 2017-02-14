@@ -15,7 +15,9 @@ import com.android.volley.toolbox.ImageLoader;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 
+import es.upv.master.audiolibros.singletons.LibrosSingleton;
 import es.upv.master.audiolibros.singletons.VolleySingleton;
+
 
 public class AdaptadorLibrosUI extends FirebaseRecyclerAdapter<Libro, AdaptadorLibrosUI.ViewHolder> {
     private LayoutInflater inflador; //Crea Layouts a partir del XML
@@ -26,6 +28,7 @@ public class AdaptadorLibrosUI extends FirebaseRecyclerAdapter<Libro, AdaptadorL
     private LongClickAction longClickAction = new EmptyLongClickAction();
    protected DatabaseReference booksReference;
     VolleySingleton volleySingleton;
+    LibrosSingleton librosSingleton;
 
     public void setClickAction(ClickAction clickAction)
     {
@@ -48,6 +51,7 @@ public class AdaptadorLibrosUI extends FirebaseRecyclerAdapter<Libro, AdaptadorL
         this.contexto = contexto;
         this.booksReference = reference;
         volleySingleton = VolleySingleton.getInstance(contexto);
+        LibrosSingleton librosSingleton = LibrosSingleton.getInstance(contexto);
     }
 
     //Creamos nuestro ViewHolder, con los tipos de elementos a modificar
@@ -77,12 +81,14 @@ public class AdaptadorLibrosUI extends FirebaseRecyclerAdapter<Libro, AdaptadorL
         holder.titulo.setText(libro.getTitulo());
         holder.itemView.setScaleX(1);
         holder.itemView.setScaleY(1);
+
+        final String key = librosSingleton.getAdaptador().getItemKey(posicion);
         holder.itemView.setOnClickListener(new View.OnClickListener()
         {
-            @Override
+
             public void onClick(View v)
             {
-                clickAction.execute(posicion);
+                clickAction.execute(key);
             }
         }
         );
@@ -91,7 +97,7 @@ public class AdaptadorLibrosUI extends FirebaseRecyclerAdapter<Libro, AdaptadorL
           @Override
           public boolean onLongClick(View v)
           {
-              longClickAction.execute(posicion);
+              longClickAction.execute(key);
               return true;
           }
         }
@@ -105,7 +111,6 @@ public class AdaptadorLibrosUI extends FirebaseRecyclerAdapter<Libro, AdaptadorL
                 Bitmap bitmap = response.getBitmap();
                 if (bitmap != null) {
                     holder.portada.setImageBitmap(bitmap);
-                    //Palette palette = Palette.from(bitmap).generate();
                     Palette.from(bitmap).generate(new Palette.PaletteAsyncListener()
                     {
                        public void onGenerated(Palette palette)

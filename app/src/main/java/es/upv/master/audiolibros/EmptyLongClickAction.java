@@ -6,7 +6,7 @@ package es.upv.master.audiolibros;
 
 public class EmptyLongClickAction implements LongClickAction {
     @Override
-    public void execute(int position) {
+    public void execute(String key) {
 
     }
 }

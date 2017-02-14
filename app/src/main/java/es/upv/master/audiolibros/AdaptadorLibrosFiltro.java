@@ -78,7 +78,6 @@ public class AdaptadorLibrosFiltro extends AdaptadorLibros implements Observer{
     }
 
     public void insertar(Libro libro) {
-        //vectorSinFiltro.add(0,libro);
         booksReference.push().setValue(libro);
         recalculaFiltro();
     }
@@ -99,4 +98,14 @@ public class AdaptadorLibrosFiltro extends AdaptadorLibros implements Observer{
         }
         return indiceFiltro.size();
     }
+
+    public String getItemKey(int posicion) {
+        if (librosUltimoFiltro != super.getItemCount()) {
+            recalculaFiltro();
+        }
+        int id = indiceFiltro.get(posicion);
+        return super.getItemKey(id);
+    }
+
+
 }

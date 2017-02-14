@@ -43,6 +43,7 @@ import es.upv.master.audiolibros.fragments.PreferenciasFragment;
 import es.upv.master.audiolibros.fragments.SelectorFragments;
 import es.upv.master.audiolibros.singletons.VolleySingleton;
 
+import static android.R.attr.id;
 import static es.upv.master.audiolibros.R.id.txtName;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MainPresenter.View {
@@ -180,8 +181,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    public void mostrarDetalle(int id) {
-        mainPresenter.openDetalle(id);
+    //public void mostrarDetalle(int id) {
+    public void mostrarDetalle(String key) {
+        mainPresenter.openDetalle(key);
+        //mainPresenter.openDetalle(id);
     }
 
 
@@ -191,14 +194,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void mostrarFragmentDetalle(int id) {
+    public void mostrarFragmentDetalle(String key) {
         DetalleFragment detalleFragment = (DetalleFragment) getFragmentManager().findFragmentById(R.id.detalle_fragment);
         if (detalleFragment != null) {
-            detalleFragment.ponInfoLibro(id);
+            detalleFragment.ponInfoLibro(key);
         } else {
             DetalleFragment nuevoFragment = new DetalleFragment();
             Bundle args = new Bundle();
-            args.putInt(DetalleFragment.ARG_ID_LIBRO, id);
+            args.putString(DetalleFragment.ARG_ID_LIBRO, key);
             nuevoFragment.setArguments(args);
             FragmentTransaction transaccion = getFragmentManager().beginTransaction();
             transaccion.replace(R.id.contenedor_pequeno, nuevoFragment);

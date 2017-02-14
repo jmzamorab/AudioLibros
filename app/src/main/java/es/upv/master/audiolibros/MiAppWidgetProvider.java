@@ -16,15 +16,10 @@ import static android.R.attr.id;
  */
 
 public class MiAppWidgetProvider extends AppWidgetProvider {
-    //private static Aplicacion app;
-    //private Aplicacion app;
-    //private LibrosSingleton librosSingleton;
 
 
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
                          int[] widgetIds) {
-        //app = ((Aplicacion) (context.getApplicationContext()));
-        //librosSingleton = LibrosSingleton.getInstance(context);
         for (int widgetId : widgetIds) {
             // TODO creo metodo que me muestre titulo y autor de último libro visto
             // obviamente hay que controlar que SharedPreferences tenga contenido o que muestre el primero.
@@ -40,8 +35,8 @@ public class MiAppWidgetProvider extends AppWidgetProvider {
         LibroStorage libroStorage = LibrosSharedPreferenceStorage.getInstance(context);
         if (libroStorage.hasLastBook())
         {
-            int id = libroStorage.getLastBook();
-            item = librosSingleton.getAdaptador().getItem(id);
+            String key = libroStorage.getLastBook();
+            item = librosSingleton.getAdaptador().getItemByKey(key);//   getItem(key);
         }
         else
         {

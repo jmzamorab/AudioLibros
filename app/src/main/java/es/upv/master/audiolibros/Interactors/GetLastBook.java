@@ -14,7 +14,8 @@ public class GetLastBook {
         this.booksRepository = booksRepository;
     }
 
-    public int execute() {
+    //public int execute() {
+    public String execute() {
         return booksRepository.getLastBook();
     }
 }

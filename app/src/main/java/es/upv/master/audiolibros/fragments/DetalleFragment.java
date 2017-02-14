@@ -16,6 +16,7 @@ import es.upv.master.audiolibros.MainActivity;
 import es.upv.master.audiolibros.R;
 import es.upv.master.audiolibros.ZoomSeekBar;
 
+import static android.R.attr.id;
 import static es.upv.master.audiolibros.R.id.autor;
 
 
@@ -39,16 +40,20 @@ public class DetalleFragment extends Fragment implements DetalleFragmentPresente
 
         Bundle args = getArguments();
         if (args != null) {
-            int position = args.getInt(ARG_ID_LIBRO);
-            detalleFragmentPresenter.ponInfoLibro(position);
-        } else {
+           // int position = args.getInt(ARG_ID_LIBRO);
+            String key = args.getString(ARG_ID_LIBRO);
+            detalleFragmentPresenter.ponInfoLibro(key);
+        } /*else {
+
             detalleFragmentPresenter.ponInfoLibro(0);
-        }
+        }*/
         return vista;
     }
 
-    public void ponInfoLibro(int id) {
-        detalleFragmentPresenter.ponInfoLibro(id);
+    //public void ponInfoLibro(int id) {
+    public void ponInfoLibro(String key) {
+        //detalleFragmentPresenter.ponInfoLibro(id);
+        detalleFragmentPresenter.ponInfoLibro(key);
     }
 
     @Override

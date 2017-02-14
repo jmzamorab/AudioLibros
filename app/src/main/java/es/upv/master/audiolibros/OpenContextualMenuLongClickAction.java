@@ -36,31 +36,35 @@ public class OpenContextualMenuLongClickAction implements LongClickAction {
 
 
     @Override
-    public void execute(final int position) {
+    public void execute(final String key) {
             AlertDialog.Builder menu = new AlertDialog.Builder(actividad);
             CharSequence[] opciones = {"Compartir", "Borrar ", "Insertar"};
             menu.setItems(opciones, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int opcion) {
                     switch (opcion) {
                         case 0: //Compartir Libro
-                            Libro libroItem = librosSingleton.getAdaptador().getItem(position);
+                            Libro libroItem = librosSingleton.getAdaptador().getItemByKey(key);//.getItem(position);
                             ((MainActivity) actividad).shareBook(libroItem);
                             break;
                         case 1: //Borrar
                             Snackbar.make(vista, "¿Estás seguro?", Snackbar.LENGTH_LONG).setAction("SI", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
+                                    int position = librosSingleton.getAdaptador().getPosByKey(key);
+                                    if (position != -1 ){
                                     DatabaseReference bookRef = librosSingleton.getAdaptador().getRef(position);
                                     bookRef.removeValue();
                                     Animation anim = AnimationUtils.loadAnimation(actividad, R.anim.menguar);
                                     anim.setAnimationListener((Animation.AnimationListener) selectorFragment);
                                     vista.startAnimation(anim);
+                                    //adaptador.borrar(position);
                                     adaptador.borrar(position);
-                                    adaptador.notifyDataSetChanged();
+                                    adaptador.notifyDataSetChanged();}
                                 }
                             }).show();
                             break;
                         case 2: //Insertar
+                            int position = librosSingleton.getAdaptador().getPosByKey(key);
                             adaptador.insertar((Libro) adaptador.getItem(position));
                             adaptador.notifyItemRangeChanged(0,adaptador.getItemCount());
                             Snackbar.make(vista, "Libro insertado", Snackbar.LENGTH_INDEFINITE)

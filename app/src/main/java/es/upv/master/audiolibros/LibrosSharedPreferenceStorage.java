@@ -45,21 +45,21 @@ public class LibrosSharedPreferenceStorage implements LibroStorage, UserStorage 
     }
 
     @Override
-    public int getLastBook(){
-        return getPreference().getInt(KEY_ULTIMO_LIBRO, -1);
+    public String getLastBook(){
+        return getPreference().getString(KEY_ULTIMO_LIBRO, "");
     }
 
     @Override
-    public void setLastBook(int lastBook) {
+    public void setLastBook(String key) {
         SharedPreferences pref = getPreference();
         SharedPreferences.Editor editor = pref.edit();
-        editor.putInt(KEY_ULTIMO_LIBRO, lastBook);
+        editor.putString(KEY_ULTIMO_LIBRO, key);
         editor.apply();
     }
 
     @Override
-    public void saveLastBook(int lastBook) {
-        setLastBook(lastBook);
+   public void saveLastBook(String key) {
+     setLastBook(key);
     }
 
 

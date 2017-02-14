@@ -6,7 +6,7 @@ package es.upv.master.audiolibros;
 
 public interface LibroStorage {
     boolean hasLastBook();
-    int getLastBook();
-    void setLastBook(int lastBook);
-    void saveLastBook(int lastBook);
+    String getLastBook();
+    void setLastBook(String  key);
+    void saveLastBook(String key);
 }

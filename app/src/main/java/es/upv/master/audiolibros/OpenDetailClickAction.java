@@ -1,8 +1,5 @@
 package es.upv.master.audiolibros;
 
-/**
- * Created by padres on 29/01/2017.
- */
 
 public class OpenDetailClickAction implements ClickAction {
     private final MainActivity mainActivity;
@@ -12,7 +9,7 @@ public class OpenDetailClickAction implements ClickAction {
     }
 
     @Override
-    public void execute(int position) {
-        mainActivity.mostrarDetalle(position);
+    public void execute(String key) {
+        mainActivity.mostrarDetalle(key);
     }
 }

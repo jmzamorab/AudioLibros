@@ -18,6 +18,7 @@ import es.upv.master.audiolibros.fragments.DetalleFragment;
 import es.upv.master.audiolibros.singletons.LibrosSingleton;
 import es.upv.master.audiolibros.singletons.VolleySingleton;
 
+import static android.R.attr.id;
 import static es.upv.master.audiolibros.R.drawable.libro;
 
 /**
@@ -44,8 +45,10 @@ public class DetalleFragmentPresenter implements OnValueListener, MediaPlayer.On
     }
 
 
-    public void ponInfoLibro(int id) {
-        final Libro libro = librosSingleton.getAdaptador().getItem(id);
+    //public void ponInfoLibro(int id) {
+    public void ponInfoLibro(String key) {
+        final Libro libro = librosSingleton.getAdaptador().getItemByKey(key);
+        //.getItem(id);
         ImageLoader imgLoader = volleySingleton.getLectorImagenes();
         view.showLibro(libro, imgLoader);
 

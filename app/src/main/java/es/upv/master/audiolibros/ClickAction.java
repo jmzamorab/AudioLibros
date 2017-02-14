@@ -5,5 +5,5 @@ package es.upv.master.audiolibros;
  */
 
 public interface ClickAction {
-     void execute (int posistion);
+     void execute (String key);
 }

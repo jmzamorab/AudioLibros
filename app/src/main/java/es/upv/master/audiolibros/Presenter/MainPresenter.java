@@ -4,6 +4,8 @@ import es.upv.master.audiolibros.Interactors.GetLastBook;
 import es.upv.master.audiolibros.Interactors.HasLastBook;
 import es.upv.master.audiolibros.Interactors.SaveLastBook;
 
+import static android.R.attr.id;
+
 /**
  * Created by padres on 01/02/2017.
  */
@@ -29,13 +31,17 @@ public class MainPresenter {
         }
     }
 
-    public void openDetalle(int id) {
-        saveLastBook.execute(id);
-        view.mostrarFragmentDetalle(id);
+    //public void openDetalle(int id) {
+    public void openDetalle(String key) {
+        //saveLastBook.execute(id);
+        //view.mostrarFragmentDetalle(id);
+        saveLastBook.execute(key);
+        view.mostrarFragmentDetalle(key);
       }
 
     public interface View {
-        void mostrarFragmentDetalle(int lastBook);
+//        void mostrarFragmentDetalle(int lastBook);
+        void mostrarFragmentDetalle(String key);
         void mostrarNoUltimaVisita();
     }
 }
