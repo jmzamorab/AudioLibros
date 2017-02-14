@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import com.google.firebase.database.DatabaseReference;
+
 import es.upv.master.audiolibros.singletons.LibrosSingleton;
 import es.upv.master.audiolibros.fragments.SelectorFragments;
 
@@ -43,7 +45,8 @@ public class OpenContextualMenuLongClickAction implements LongClickAction {
                     switch (opcion) {
                         case 0: //Compartir Libro
                             //Libro libro = vectorLibros.get(position);
-                            Libro libroItem = librosSingleton.getVectorLibros().get(position);
+                        //    Libro libroItem = librosSingleton.getVectorLibros().get(position);
+                            Libro libroItem = librosSingleton.getAdaptador().getItem(position);
                             ((MainActivity) actividad).shareBook(libroItem);
                             break;
                         case 1: //Borrar
@@ -51,7 +54,9 @@ public class OpenContextualMenuLongClickAction implements LongClickAction {
                                 @Override
                                 public void onClick(View view) {
                                     //vectorLibros.remove(position);
-                                    librosSingleton.getVectorLibros().remove(position);
+                                    //librosSingleton.getVectorLibros().remove(position);
+                                    DatabaseReference bookRef = librosSingleton.getAdaptador().getRef(position);
+                                    bookRef.removeValue();
                                     Animation anim = AnimationUtils.loadAnimation(actividad, R.anim.menguar);
                                     anim.setAnimationListener((Animation.AnimationListener) selectorFragment);
                                     vista.startAnimation(anim);

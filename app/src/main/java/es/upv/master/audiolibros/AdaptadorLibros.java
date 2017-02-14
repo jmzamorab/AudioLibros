@@ -12,20 +12,24 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DatabaseReference;
 
 import es.upv.master.audiolibros.singletons.LibrosSingleton;
 import es.upv.master.audiolibros.singletons.VolleySingleton;
 
 import static es.upv.master.audiolibros.R.id.titulo;
 
-public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHolder> {
+//public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHolder> {
+public class AdaptadorLibros extends FirebaseRecyclerAdapter<Libro, AdaptadorLibros.ViewHolder> {
     private LayoutInflater inflador; //Crea Layouts a partir del XML
     private Context contexto;
     private View.OnClickListener onClickListener;
     private View.OnLongClickListener onLongClickListener;
     private ClickAction clickAction = new EmptyClickAction();
     private LongClickAction longClickAction = new EmptyLongClickAction();
-    LibrosSingleton libroSingleton;
+   // LibrosSingleton libroSingleton;
+   protected DatabaseReference booksReference;
     VolleySingleton volleySingleton;
 
     public void setClickAction(ClickAction clickAction)
@@ -43,10 +47,13 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
         this.onLongClickListener = onLongClickListener;
     }
 
-    public AdaptadorLibros(Context contexto){
+    //public AdaptadorLibros(Context contexto){
+    public AdaptadorLibros(Context contexto, DatabaseReference reference){
+        super(Libro.class, R.layout.elemento_selector, AdaptadorLibros.ViewHolder.class, reference);
         inflador = (LayoutInflater) contexto.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.contexto = contexto;
-        libroSingleton = LibrosSingleton.getInstance(contexto);
+        this.booksReference = reference;
+        //libroSingleton = LibrosSingleton.getInstance(contexto);
         volleySingleton = VolleySingleton.getInstance(contexto);
     }
 
@@ -74,9 +81,11 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
 
     // Usando como base el ViewHolder y lo personalizamos
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int posicion) {
-        final Libro libroItem = libroSingleton.getVectorLibros().get(posicion);
-        holder.titulo.setText(libroItem.getTitulo());
+    //public void onBindViewHolder(final ViewHolder holder, final int posicion) {
+    public void populateViewHolder(final ViewHolder holder, final Libro libro, final int posicion) {
+        //final Libro libroItem = libroSingleton.getVectorLibros().get(posicion);
+        //holder.titulo.setText(libroItem.getTitulo());
+        holder.titulo.setText(libro.getTitulo());
         holder.itemView.setScaleX(1);
         holder.itemView.setScaleY(1);
         holder.itemView.setOnClickListener(new View.OnClickListener()
@@ -99,7 +108,7 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
         }
 
         );
-        volleySingleton.getLectorImagenes().get(libroItem.getUrlImagen(), new ImageLoader.ImageListener() {
+        volleySingleton.getLectorImagenes().get(libro.getUrlImagen(), new ImageLoader.ImageListener() {
 
 
             @Override
@@ -112,14 +121,14 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
                     {
                        public void onGenerated(Palette palette)
                        {
-                           if (libroItem.getColorVibrante() == -1){
-                               libroItem.setColorVibrante(palette.getLightMutedColor(0));
+                           if (libro.getColorVibrante() == -1){
+                               libro.setColorVibrante(palette.getLightMutedColor(0));
                            }
-                           if (libroItem.getColorApagado() == -1){
-                               libroItem.setColorApagado(palette.getLightVibrantColor(0));
+                           if (libro.getColorApagado() == -1){
+                               libro.setColorApagado(palette.getLightVibrantColor(0));
                            }
-                           holder.itemView.setBackgroundColor(libroItem.getColorVibrante());
-                           holder.titulo.setBackgroundColor(libroItem.getColorApagado());
+                           holder.itemView.setBackgroundColor(libro.getColorVibrante());
+                           holder.titulo.setBackgroundColor(libro.getColorApagado());
                            holder.portada.invalidate();
                        }
                     });
@@ -134,9 +143,9 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
 
     }
 
-    // Indicamos el número de elementos de la lista
+  /*  // Indicamos el número de elementos de la lista
     @Override
     public int getItemCount() {
         return libroSingleton.getVectorLibros().size();
-    }
+    }*/
 }

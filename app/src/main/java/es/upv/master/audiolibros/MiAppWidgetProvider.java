@@ -9,6 +9,8 @@ import android.widget.RemoteViews;
 
 import es.upv.master.audiolibros.singletons.LibrosSingleton;
 
+import static android.R.attr.id;
+
 /**
  * Created by JoseMaria.Zamora on 24/01/2017.
  */
@@ -39,11 +41,13 @@ public class MiAppWidgetProvider extends AppWidgetProvider {
         if (libroStorage.hasLastBook())
         {
             int id = libroStorage.getLastBook();
-            item = librosSingleton.getVectorLibros().get(id);
+            //item = librosSingleton.getVectorLibros().get(id);
+            item = librosSingleton.getAdaptador().getItem(id);
         }
         else
         {
-            item = librosSingleton.getVectorLibros().get(0);
+            //item = librosSingleton.getVectorLibros().get(0);
+            item = librosSingleton.getAdaptador().getItem(0);
         }
         /*SharedPreferences pref = context.getSharedPreferences("es.upv.master.audiolibros_internal", MODE_PRIVATE);
         int id = pref.getInt("ultimo", -1);

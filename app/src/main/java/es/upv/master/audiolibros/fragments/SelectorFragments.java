@@ -19,9 +19,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+
+import com.google.firebase.database.DatabaseReference;
+
 import java.util.List;
 import es.upv.master.audiolibros.AdaptadorLibrosFiltro;
 import es.upv.master.audiolibros.Libro;
+import es.upv.master.audiolibros.singletons.FirebaseDBSingleton;
 import es.upv.master.audiolibros.singletons.LibrosSingleton;
 import es.upv.master.audiolibros.MainActivity;
 import es.upv.master.audiolibros.OpenContextualMenuLongClickAction;
@@ -33,7 +37,7 @@ public class SelectorFragments extends Fragment implements Animation.AnimationLi
     private Activity actividad;
     private RecyclerView recyclerView;
     private AdaptadorLibrosFiltro adaptador;
-    private List<Libro> vectorLibros;
+    //private List<Libro> vectorLibros;
     LibrosSingleton librosSingleton;
 
     @Override
@@ -44,7 +48,7 @@ public class SelectorFragments extends Fragment implements Animation.AnimationLi
             //Aplicacion app = (Aplicacion) actividad.getApplication();
             librosSingleton = LibrosSingleton.getInstance(contexto);
             adaptador = (AdaptadorLibrosFiltro) librosSingleton.getAdaptador();
-            vectorLibros = librosSingleton.getVectorLibros();
+      //      vectorLibros = librosSingleton.getVectorLibros();
         }
     }
 
