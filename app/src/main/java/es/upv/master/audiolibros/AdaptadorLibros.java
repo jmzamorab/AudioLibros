@@ -20,7 +20,6 @@ import es.upv.master.audiolibros.singletons.VolleySingleton;
 
 import static es.upv.master.audiolibros.R.id.titulo;
 
-//public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHolder> {
 public class AdaptadorLibros extends FirebaseRecyclerAdapter<Libro, AdaptadorLibros.ViewHolder> {
     private LayoutInflater inflador; //Crea Layouts a partir del XML
     private Context contexto;
@@ -47,13 +46,11 @@ public class AdaptadorLibros extends FirebaseRecyclerAdapter<Libro, AdaptadorLib
         this.onLongClickListener = onLongClickListener;
     }
 
-    //public AdaptadorLibros(Context contexto){
     public AdaptadorLibros(Context contexto, DatabaseReference reference){
         super(Libro.class, R.layout.elemento_selector, AdaptadorLibros.ViewHolder.class, reference);
         inflador = (LayoutInflater) contexto.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.contexto = contexto;
         this.booksReference = reference;
-        //libroSingleton = LibrosSingleton.getInstance(contexto);
         volleySingleton = VolleySingleton.getInstance(contexto);
     }
 
@@ -75,16 +72,12 @@ public class AdaptadorLibros extends FirebaseRecyclerAdapter<Libro, AdaptadorLib
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Inflamos la vista desde el xml
         View v = inflador.inflate(R.layout.elemento_selector, null);
-        //v.setOnLongClickListener(onLongClickListener);
         return new ViewHolder(v);
     }
 
     // Usando como base el ViewHolder y lo personalizamos
     @Override
-    //public void onBindViewHolder(final ViewHolder holder, final int posicion) {
     public void populateViewHolder(final ViewHolder holder, final Libro libro, final int posicion) {
-        //final Libro libroItem = libroSingleton.getVectorLibros().get(posicion);
-        //holder.titulo.setText(libroItem.getTitulo());
         holder.titulo.setText(libro.getTitulo());
         holder.itemView.setScaleX(1);
         holder.itemView.setScaleY(1);
@@ -143,9 +136,4 @@ public class AdaptadorLibros extends FirebaseRecyclerAdapter<Libro, AdaptadorLib
 
     }
 
-  /*  // Indicamos el número de elementos de la lista
-    @Override
-    public int getItemCount() {
-        return libroSingleton.getVectorLibros().size();
-    }*/
 }

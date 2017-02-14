@@ -28,12 +28,10 @@ public class Libro {
 
     private  String titulo;
     private String autor;
-    //public int recursoImagen;
     private String urlImagen;
     private String urlAudio;
     private String genero; // Género literario
     private Boolean novedad; // Es una novedad
-    //public Boolean leido; // Leído por el usuario
     private Map<String, Boolean> leido;
 
     public final static String G_TODOS = "Todos los géneros";
@@ -114,7 +112,6 @@ public class Libro {
         this.urlAudio = urlAudio;
         this.genero = genero;
         this.novedad = novedad;
-        //this.leido = leido;
         this.leido = new HashMap<String, Boolean>();
 
     }
@@ -137,15 +134,6 @@ public class Libro {
 
     public static List<Libro> ejemploLibros() {
         List<Libro> libros = new ArrayList<Libro>();
-        /*libros.add(new LibroBuilder().withTitulo("Kappa").withAutor("Akutagawa").withUrlImagen(SERVIDOR + "kappa.jpg").withUrlAudio(SERVIDOR + "kappa.mp3").withGenero(Libro.G_S_XIX).withLeido(false).withNovedad(false).build());
-        libros.add(new LibroBuilder().withTitulo("Avecilla").withAutor("Alas Clarín, Leopoldo").
-                withUrlImagen(SERVIDOR + "avecilla.jpg").withUrlAudio(SERVIDOR + "avecilla.mp3").withGenero(Libro.G_S_XIX).withLeido(true).withNovedad(false).build());
-        libros.add(new LibroBuilder().withTitulo("Divina Comedia").withAutor("Dante").withUrlImagen(SERVIDOR + "divina_comedia.jpg").withUrlAudio(SERVIDOR + "divina_comedia.mp3").withGenero(Libro.G_EPICO).withLeido(true).withNovedad(false).build());
-        libros.add(new LibroBuilder().withTitulo("Viejo Pancho, El").withAutor("Alonso y Trelles, José").withUrlImagen(SERVIDOR + "viejo_pancho.jpg").withUrlAudio(SERVIDOR + "viejo_pancho.mp3").withGenero(Libro.G_S_XIX).withLeido(true).withNovedad(true).build());
-        libros.add(new LibroBuilder().withTitulo("Canción de Rolando").withAutor("Anónimo").withUrlImagen(SERVIDOR + "cancion_rolando.jpg").withUrlAudio(SERVIDOR + "cancion_rolando.mp3").withGenero(Libro.G_EPICO).withLeido(false).withNovedad(true).build());
-        libros.add(new LibroBuilder().withTitulo("Matrimonio de sabuesos").withAutor("Agata Christie").withUrlImagen(SERVIDOR + "matrim_sabuesos.jpg").withUrlAudio(SERVIDOR + "matrim_sabuesos.mp3").withGenero(Libro.G_SUSPENSE).withLeido(false).withNovedad(true).build());
-        libros.add(new LibroBuilder().withTitulo("La iliada").withAutor("Homero").withUrlImagen(SERVIDOR + "la_iliada.jpg").withUrlAudio(SERVIDOR + "la_iliada.mp3").withGenero(Libro.G_EPICO).withLeido(true).withNovedad(false).build());*/
-        libros.add(new LibroBuilder().withTitulo("Kappa").withAutor("Akutagawa").withUrlImagen(SERVIDOR + "kappa.jpg").withUrlAudio(SERVIDOR + "kappa.mp3").withGenero(Libro.G_S_XIX).withNovedad(false).build());
         libros.add(new LibroBuilder().withTitulo("Avecilla").withAutor("Alas Clarín, Leopoldo").
                 withUrlImagen(SERVIDOR + "avecilla.jpg").withUrlAudio(SERVIDOR + "avecilla.mp3").withGenero(Libro.G_S_XIX).withNovedad(false).build());
         libros.add(new LibroBuilder().withTitulo("Divina Comedia").withAutor("Dante").withUrlImagen(SERVIDOR + "divina_comedia.jpg").withUrlAudio(SERVIDOR + "divina_comedia.mp3").withGenero(Libro.G_EPICO).withNovedad(false).build());
@@ -163,7 +151,6 @@ public class Libro {
         private String urlAudio = "";
         private String genero = G_TODOS; // Género literario
         private Boolean novedad = false; // Es una novedad
-        //private Boolean leido = false; // Leído por el usuario
 
         public LibroBuilder withTitulo(String titulo) {
             this.titulo = titulo;
@@ -195,13 +182,8 @@ public class Libro {
             return this;
         }
 
-      /*  public LibroBuilder withLeido(Boolean leido) {
-            this.leido = leido;
-            return this;
-        }*/
 
         public Libro build() {
-            //return new Libro(titulo, autor, urlImagen, urlAudio, genero, novedad, leido);
             return new Libro(titulo, autor, urlImagen, urlAudio, genero, novedad);
         }
 

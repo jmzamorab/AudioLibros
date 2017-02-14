@@ -154,10 +154,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Uri urlImagen = currentUser.getPhotoUrl();
         if (urlImagen != null) {
             NetworkImageView fotoUsuario = (NetworkImageView) headerLayout.findViewById(R.id.imageView);
-            Aplicacion aplicacion = (Aplicacion) getApplicationContext();
-            //volleySingleton.getLectorImagenes()
-
-            //fotoUsuario.setImageUrl(urlImagen.toString(), aplicacion.getLectorImagenes());
             fotoUsuario.setImageUrl(urlImagen.toString(), volleySingleton.getLectorImagenes());
         }
     }

@@ -45,7 +45,6 @@ public class DetalleFragmentPresenter implements OnValueListener, MediaPlayer.On
 
 
     public void ponInfoLibro(int id) {
-        //final Libro libro = librosSingleton.getVectorLibros().get(id);
         final Libro libro = librosSingleton.getAdaptador().getItem(id);
         ImageLoader imgLoader = volleySingleton.getLectorImagenes();
         view.showLibro(libro, imgLoader);

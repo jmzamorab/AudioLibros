@@ -14,23 +14,14 @@ import es.upv.master.audiolibros.Libro;
  * Created by padres on 30/01/2017.
  */
 public class LibrosSingleton {
-    private static LibrosSingleton instance;// = new LibrosSingleton();
+    private static LibrosSingleton instance;
     private Context context;
-   // private List<Libro> vectorLibros ;
     private AdaptadorLibros adaptador ;
 
-  //  public List<Libro> getVectorLibros() {
-  //      return vectorLibros;
-  //  }
 
     private void inicializa() {
-      //  vectorLibros = Libro.ejemploLibros();
         adaptador = new AdaptadorLibrosFiltro(context,  FirebaseDBSingleton.getInstance().getBooksReference());
     }
-
- //   public void setVectorLibros(List<Libro> vectorLibros) {
-  //      this.vectorLibros = vectorLibros;
-  //  }
 
     public AdaptadorLibros getAdaptador() {
         return adaptador;
