@@ -39,7 +39,6 @@ public class SelectorFragments extends Fragment implements Animation.AnimationLi
     private Activity actividad;
     private RecyclerView recyclerView;
     private AdaptadorLibrosFiltro adaptador;
-    //private List<Libro> vectorLibros;
     LibrosSingleton librosSingleton;
 
     @Override
@@ -47,10 +46,8 @@ public class SelectorFragments extends Fragment implements Animation.AnimationLi
         super.onAttach(contexto);
         if (contexto instanceof Activity) {
             this.actividad = (Activity) contexto;
-            //Aplicacion app = (Aplicacion) actividad.getApplication();
             librosSingleton = LibrosSingleton.getInstance(contexto);
             adaptador = (AdaptadorLibrosFiltro) librosSingleton.getAdaptador();
-      //      vectorLibros = librosSingleton.getVectorLibros();
         }
     }
 
