@@ -2,6 +2,8 @@ package es.upv.master.audiolibros;
 
 import android.content.Context;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import es.upv.master.audiolibros.singletons.FirebaseAuthSingleton;
 import es.upv.master.audiolibros.singletons.LibrosSingleton;
 
 
@@ -20,9 +23,13 @@ public class AdaptadorLibrosFiltro extends AdaptadorLibros implements Observer{
     private boolean novedad = false; // Si queremos ver solo novedades
     private boolean leido = false; // Si queremos ver solo leidos
     private int librosUltimoFiltro;
+    private FirebaseAuth auth;
+    private FirebaseUser currentUser;
 
     public AdaptadorLibrosFiltro(Context contexto, DatabaseReference reference) {
         super(contexto, reference);
+        auth = FirebaseAuthSingleton.getInstance().getAuth();
+        currentUser = auth.getCurrentUser();
         recalculaFiltro();
     }
 
@@ -54,11 +61,11 @@ public class AdaptadorLibrosFiltro extends AdaptadorLibros implements Observer{
             if ((libroItem.getTitulo().toLowerCase().contains(busqueda) || libroItem.getAutor().toLowerCase().contains(busqueda))
                     && (libroItem.getGenero().startsWith(genero))
                     && (!novedad || (novedad && libroItem.getNovedad()))
-                    && (!leido || (leido /*&& libro.leido*/))) {
+                    && (!leido || (leido && libroItem.leidoPorMi(currentUser.getUid())))){
                 indiceFiltro.add(i);
-            }
         }
     }
+}
 
     public Libro getItem(int posicion) {
         if (librosUltimoFiltro != super.getItemCount()) {
