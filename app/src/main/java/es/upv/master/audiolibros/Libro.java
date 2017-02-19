@@ -42,56 +42,6 @@ public class Libro {
             G_S_XIX, G_SUSPENSE};
     private final static String SERVIDOR = "http://www.dcomg.upv.es/~jtomas/android/audiolibros/";
 
-
-    public String getAutor() {
-        return autor;
-    }
-
-    public void setAutor(String autor) {
-        this.autor = autor;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-
-    public String getUrlImagen() {
-        return urlImagen;
-    }
-
-    public void setUrlImagen(String urlImagen) {
-        this.urlImagen = urlImagen;
-    }
-
-    public String getUrlAudio() {
-        return urlAudio;
-    }
-
-    public void setUrlAudio(String urlAudio) {
-        this.urlAudio = urlAudio;
-    }
-
-    public String getGenero() {
-        return genero;
-    }
-
-    public void setGenero(String genero) {
-        this.genero = genero;
-    }
-
-    public Boolean getNovedad() {
-        return novedad;
-    }
-
-    public void setNovedad(Boolean novedad) {
-        this.novedad = novedad;
-    }
-
     public Map<String, Boolean> getLeido() {
         return leido;
     }
@@ -99,6 +49,18 @@ public class Libro {
     public void setLeido(Map<String, Boolean> leido) {
         this.leido = leido;
     }
+
+   public  boolean leidoPorMi(String currentId)
+   {
+       boolean result = false;
+       if (this.leido != null)
+       {
+           result = this.leido.keySet().contains(currentId);
+       }
+       return  result;
+
+   }
+
 
 
     // Patrón Null Object
@@ -187,5 +149,55 @@ public class Libro {
             return new Libro(titulo, autor, urlImagen, urlAudio, genero, novedad);
         }
 
+    }
+
+
+    public String getAutor() {
+        return autor;
+    }
+
+    public void setAutor(String autor) {
+        this.autor = autor;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+
+    public String getUrlImagen() {
+        return urlImagen;
+    }
+
+    public void setUrlImagen(String urlImagen) {
+        this.urlImagen = urlImagen;
+    }
+
+    public String getUrlAudio() {
+        return urlAudio;
+    }
+
+    public void setUrlAudio(String urlAudio) {
+        this.urlAudio = urlAudio;
+    }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
+
+    public Boolean getNovedad() {
+        return novedad;
+    }
+
+    public void setNovedad(Boolean novedad) {
+        this.novedad = novedad;
     }
 }
