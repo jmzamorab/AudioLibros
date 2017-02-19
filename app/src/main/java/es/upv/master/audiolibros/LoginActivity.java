@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
@@ -24,6 +26,8 @@ import java.util.Arrays;
 import es.upv.master.audiolibros.singletons.FirebaseAuthSingleton;
 import es.upv.master.audiolibros.singletons.FirebaseDBSingleton;
 
+import static android.R.id.message;
+
 /**
  * Created by padres on 06/02/2017.
  */
@@ -35,10 +39,28 @@ public class LoginActivity extends AppCompatActivity {
     private UserStorage userStorage;
     private final String KEY_EMAIL = "password";
 
+    private final int CONFIRM_EMAIL = 10;
+    private final int ERROR = 20;
+    private final int NILL = 0;
+
+    public int getMessageType() {
+        return messageType;
+    }
+
+    public void setMessageType(int messageType) {
+        this.messageType = messageType;
+    }
+
+    private int messageType;
+
+
+//this.findViewById(android.R.id.content).getRootView()
+//this.findViewById(android.R.id.content)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        setMessageType(NILL);
         auth = FirebaseAuthSingleton.getInstance().getAuth();
         doLogin();
     }
@@ -46,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
     private void doLogin() {
         final FirebaseUser currentUser = auth.getCurrentUser();
         if (currentUser != null) {
+          //  showMessage();
             guardarUsuario(currentUser);
             String name = currentUser.getDisplayName();
             String email = currentUser.getEmail();
@@ -54,34 +77,35 @@ public class LoginActivity extends AppCompatActivity {
             userStorage.setName(name);
             userStorage.setProvider(provider);
             String actualProvider = currentUser.getProviders().get(0);
+            Log.d("TRAZA", "Entro en doLogin");
             if (email != null) {
                 userStorage.setEMail(email);
             }
             if (actualProvider.equals(KEY_EMAIL)) {
+                Log.d("TRAZA", "Autenticación por E-MAil");
                 if (currentUser.isEmailVerified()) {
+                    Log.d("TRAZA", "Si ya tiene verificado el Mail, entro en aplicación");
                     gotoMain();
                 } else {
-                    //TODO necesario hacerlo en 2º plano
-                    final android.app.AlertDialog.Builder alertDialogAbout = new android.app.AlertDialog.Builder(this);
-                    alertDialogAbout.setMessage(R.string.verifyEmailMsg)
-                            .setTitle(R.string.verifyEmailTit)
-                            .setPositiveButton(R.string.okBtn, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    currentUser.sendEmailVerification();
-                                    showAutenticationOptions();
-                                    dialog.dismiss();
+                    Log.d("TRAZA", "No tiene verificado el Mail ..... muestro diálogo");
+                    currentUser.sendEmailVerification().
+                            addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Log.d("TRAZA", "email enviado");
+                                        FirebaseAuth.getInstance().signOut();
+                                        setMessageType(CONFIRM_EMAIL);
+                                        Log.d("TRAZA", "Cambio messageType a " + getMessageType());
+                                        resetLogin();
+                                        finish();
+                                    } else {
+                                        // email not sent, so display message and restart the activity or do whatever you wish to do
+                                        Log.d("TRAZA", "NO ENVIA email ");
+                                        cancelaTodo();
+                                    }
                                 }
-                            })
-                            .setNegativeButton(R.string.cancelBtn, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    cleanPreferences();
-                                    showAutenticationOptions();
-                                    finish();
-                                    dialog.dismiss();
-
-                                }
-                            })
-                            .show();
+                            });
                 }
             } else {
                 gotoMain();
@@ -92,52 +116,97 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private void showMessage(){
+        Log.d("TRAZA", "Dentro showMessage, valor messageType = " + messageType);
+        String msg = "";
+        if (getMessageType() != NILL) {
+            switch (getMessageType()) {
+                case ERROR:
+                    Log.d("TRAZA", "Dentro showMessage, rellnando valor de ERROR ");
+                    msg = "Ha existido en Error en al autenticación, pruebe de nuevo";
+                    break;
+                case CONFIRM_EMAIL:
+                    Log.d("TRAZA", "Dentro showMessage, rellnando valor de CONFIRM_EMAIL ");
+                    msg = "Revise su correo, confirme y acceda";
+                    break;
+            }
+
+            Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+            Snackbar.make(findViewById(android.R.id.content), msg, Snackbar.LENGTH_LONG).show();
+            Log.d("TRAZA", "Dentro showMessage, tras Toast y SnackBAr ");
+        }
+    }
+
+    private void cancelaTodo() {
+        overridePendingTransition(0, 0);
+        finish();
+        overridePendingTransition(0, 0);
+        setMessageType(ERROR);
+        Log.d("TRAZA", "Nuevo valor de messageType  " + getMessageType());
+        resetLogin();
+        //startActivity(getIntent());
+    }
+
+
     void guardarUsuario(final FirebaseUser user) {
         DatabaseReference userReference = FirebaseDBSingleton.getInstance().getUsersReference();
         final DatabaseReference currentUserReference = userReference.child(user.getUid());
         ValueEventListener userListener = new ValueEventListener() {
-            @Override public void onDataChange(DataSnapshot dataSnapshot) {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists()) {
                     currentUserReference.setValue(new User(
                             user.getDisplayName(), user.getEmail()));
                 }
             }
-            @Override public void onCancelled(DatabaseError databaseError) {}
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
         };
         currentUserReference.addListenerForSingleValueEvent(userListener);
     }
 
     private void gotoMain() {
+        Log.d("TRAZA", "Logado, entro");
         Intent i = new Intent(this, MainActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(i);
         finish();
     }
 
+    private void resetLogin() {
+        String msg;
+        Intent i = new Intent(this, LoginActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i);
+    }
 
+    //Según Usua, llama a lo que tengo en el else aqui mismo sin finish()
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == ResultCodes.OK) {
+                Log.d("TRAZA", "ActivityResult, requestCode Correcto, vuelvo a entrar ya autenticado");
                 doLogin();
                 finish();
             } else {
-                Intent i = new Intent(this, CustomLoginActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(i);
-                finish();
+                Log.d("TRAZA", "ActivityResult, requestCode InCorrecto");
+                resetLogin();
             }
         }
     }
 
     private void showAutenticationOptions() {
+        Log.d("TRAZA", "Muestro opciones  de autenticación ...");
         startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder().
                 setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
                         new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
                         new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build(),
                         new AuthUI.IdpConfig.Builder(AuthUI.TWITTER_PROVIDER).build()))
                 .setIsSmartLockEnabled(false).build(), RC_SIGN_IN);
+        showMessage();
     }
 
     private void cleanPreferences() {
