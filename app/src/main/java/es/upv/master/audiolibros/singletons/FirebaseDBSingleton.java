@@ -13,9 +13,11 @@ public class FirebaseDBSingleton {
     private static FirebaseDatabase dbFirebase;
     private final static String BOOKS_CHILD = "libros";
     private final static String USERS_CHILD = "usuarios";
+    private final static String LECTURAS_CHILD = "lecturas";
 
     private static DatabaseReference usersReference;
     private static DatabaseReference booksReference;
+    private static DatabaseReference lecturasReference;
 
     private FirebaseDBSingleton() {
 
@@ -23,6 +25,7 @@ public class FirebaseDBSingleton {
         dbFirebase.setPersistenceEnabled(true);
         booksReference = dbFirebase.getReference().child(BOOKS_CHILD);
         usersReference = dbFirebase.getReference().child(USERS_CHILD);
+        lecturasReference = dbFirebase.getReference().child(LECTURAS_CHILD);
     }
 
 
@@ -43,6 +46,10 @@ public class FirebaseDBSingleton {
 
     public DatabaseReference getBooksReference() {
         return booksReference;
+    }
+
+    public DatabaseReference getLecturasReference() {
+        return lecturasReference;
     }
 }
 

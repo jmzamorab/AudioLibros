@@ -26,6 +26,7 @@ import java.util.List;
 import es.upv.master.audiolibros.AdaptadorLibrosFiltro;
 import es.upv.master.audiolibros.Libro;
 import es.upv.master.audiolibros.singletons.FirebaseDBSingleton;
+import es.upv.master.audiolibros.singletons.LecturasSingleton;
 import es.upv.master.audiolibros.singletons.LibrosSingleton;
 import es.upv.master.audiolibros.MainActivity;
 import es.upv.master.audiolibros.OpenContextualMenuLongClickAction;
@@ -40,6 +41,7 @@ public class SelectorFragments extends Fragment implements Animation.AnimationLi
     private RecyclerView recyclerView;
     private AdaptadorLibrosFiltro adaptador;
     LibrosSingleton librosSingleton;
+    LecturasSingleton lecturasSingleton;
 
     @Override
     public void onAttach(Context contexto) {
@@ -48,6 +50,7 @@ public class SelectorFragments extends Fragment implements Animation.AnimationLi
             this.actividad = (Activity) contexto;
             librosSingleton = LibrosSingleton.getInstance(contexto);
             adaptador = (AdaptadorLibrosFiltro) librosSingleton.getAdaptador();
+            lecturasSingleton = LecturasSingleton.getInstance();
         }
     }
 
@@ -120,12 +123,14 @@ public class SelectorFragments extends Fragment implements Animation.AnimationLi
     public void onResume() {
         ((MainActivity) getActivity()).mostrarElementos(true);
         adaptador.activaEscuchadorLibros();
+        lecturasSingleton.activeListenerLecturas();
         super.onResume();
     }
 
     @Override
     public void onPause(){
         super.onPause();
+        lecturasSingleton.desactivaEscuchadorLecturas();
         adaptador.desactivaEscuchadorLibros();
     }
 

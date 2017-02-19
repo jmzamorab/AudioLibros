@@ -1,6 +1,7 @@
 package es.upv.master.audiolibros;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -12,7 +13,10 @@ import java.util.Observable;
 import java.util.Observer;
 
 import es.upv.master.audiolibros.singletons.FirebaseAuthSingleton;
+import es.upv.master.audiolibros.singletons.LecturasSingleton;
 import es.upv.master.audiolibros.singletons.LibrosSingleton;
+
+import static android.R.attr.id;
 
 
 public class AdaptadorLibrosFiltro extends AdaptadorLibros implements Observer{
@@ -25,11 +29,13 @@ public class AdaptadorLibrosFiltro extends AdaptadorLibros implements Observer{
     private int librosUltimoFiltro;
     private FirebaseAuth auth;
     private FirebaseUser currentUser;
+    private LecturasSingleton lecturasSingleton;
 
     public AdaptadorLibrosFiltro(Context contexto, DatabaseReference reference) {
         super(contexto, reference);
         auth = FirebaseAuthSingleton.getInstance().getAuth();
         currentUser = auth.getCurrentUser();
+        lecturasSingleton = LecturasSingleton.getInstance();
         recalculaFiltro();
     }
 
@@ -56,14 +62,20 @@ public class AdaptadorLibrosFiltro extends AdaptadorLibros implements Observer{
     public void recalculaFiltro() {
         indiceFiltro = new ArrayList<Integer>();
         librosUltimoFiltro = super.getItemCount();
+
         for (int i = 0; i < librosUltimoFiltro; i++) {
             Libro libroItem = super.getItem(i);
+            //Log.d("TRAZA", "recalculaFiltro item " + i + " getItemKey(i) " + getItemKey(i) + " ");
+         //   Log.d("TRAZA", "Reviso Leido; leido = " + leido + " libroLeido (lecturas)  " + lecturasSingleton.libroLeido(getItemKey(i)));
+            Log.d("TRAZA", "y finalmente libro leidoPormi = " + libroItem.leidoPorMi(currentUser.getUid()));
             if ((libroItem.getTitulo().toLowerCase().contains(busqueda) || libroItem.getAutor().toLowerCase().contains(busqueda))
                     && (libroItem.getGenero().startsWith(genero))
                     && (!novedad || (novedad && libroItem.getNovedad()))
-                    && (!leido || (leido && libroItem.leidoPorMi(currentUser.getUid())))){
+                    && (!leido || (leido && lecturasSingleton.libroLeido(getItemKey(i))))){
+                   // && (!leido || (leido && libroItem.leidoPorMi(currentUser.getUid())))){
                 indiceFiltro.add(i);
         }
+
     }
 }
 
@@ -107,12 +119,15 @@ public class AdaptadorLibrosFiltro extends AdaptadorLibros implements Observer{
     }
 
     public String getItemKey(int posicion) {
+        String sRes = "";
         if (librosUltimoFiltro != super.getItemCount()) {
             recalculaFiltro();
         }
-        int id = indiceFiltro.get(posicion);
-        return super.getItemKey(id);
+        if (indiceFiltro.size() > 0) {
+            int id = indiceFiltro.get(posicion);
+            sRes = super.getItemKey(id);
+        }
+        return sRes;
     }
-
 
 }
