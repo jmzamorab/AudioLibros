@@ -34,15 +34,32 @@
         android:textAlignment="center"
         android:textColor="@android:color/darker_gray"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-    <com.android.volley.toolbox.NetworkImageView
+
+
+        <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/portada"
         android:layout_width="220dp"
         android:layout_height="220dp"
         android:layout_below="@id/autor"
         android:layout_centerHorizontal="true"
         android:scaleType="fitCenter"/>
-    <es.upv.master.audiolibros.ZoomSeekBar
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Libro Leído: "
+            android:layout_marginTop="17dp"
+            android:layout_below="@id/portada"
+            android:layout_centerInParent="true"
+            />
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/libroLeido"
+            android:layout_below="@id/portada"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="37dp"
+            android:text="Leido" />
+        <es.upv.master.audiolibros.ZoomSeekBar
             android:id="@+id/zsbModifica"
             android:background="#FFFFFF"
             android:layout_width="match_parent"
@@ -58,6 +75,8 @@
             nuevos:colorGuia="#FF9050"
             nuevos:colorPalanca="#FF0000"
             nuevos:colorRegla="#B0B070"
-            nuevos:colorTexto="#00A0A0" />
+            nuevos:colorTexto="#00A0A0"
+            android:layout_marginTop="27dp"
+            android:layout_below="@id/libroLeido"/>
 </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
