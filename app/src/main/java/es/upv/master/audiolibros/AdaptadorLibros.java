@@ -36,11 +36,12 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
     private View.OnLongClickListener onLongClickListener;
     private ClickAction clickAction = new EmptyClickAction();
     private LongClickAction longClickAction = new EmptyLongClickAction();
+    VolleySingleton volleySingleton;
+    // Debido al uso de FireBase SDK
     private ArrayList<String> keys;
     private ArrayList<DataSnapshot> items;
-
     protected DatabaseReference booksReference;
-    VolleySingleton volleySingleton;
+
 
     public void setClickAction(ClickAction clickAction) {
         this.clickAction = clickAction;
@@ -56,16 +57,18 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
     }
 
     public AdaptadorLibros(Context contexto, DatabaseReference reference) {
-        booksReference = reference;
+        this.contexto = contexto;
+        inflador = (LayoutInflater) contexto.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        volleySingleton = VolleySingleton.getInstance(contexto);
+        // creo nuevamente la estructura, sino añadiría las mismas siempre
         keys = new ArrayList<String>();
         items = new ArrayList<DataSnapshot>();
-        inflador = (LayoutInflater) contexto.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.contexto = contexto;
-        volleySingleton = VolleySingleton.getInstance(contexto);
+        // obtengo la referencia a BBDD y asigno el Listener
         booksReference = reference;
         booksReference.addChildEventListener(this);
     }
 
+    //SI añaden nuevo libro, inserto en ambas estructuras locales items y las keys
     @Override
     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
         items.add(dataSnapshot);
@@ -73,6 +76,7 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
         notifyItemInserted(getItemCount() - 1);
     }
 
+    //SI modifican libro, actaulizo en estructura local items
     @Override
     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
         String key = dataSnapshot.getKey();
@@ -83,6 +87,7 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
         }
     }
 
+    // SI borran libro, borro en ambas estructuras
     @Override
     public void onChildRemoved(DataSnapshot dataSnapshot) {
         String key = dataSnapshot.getKey();
