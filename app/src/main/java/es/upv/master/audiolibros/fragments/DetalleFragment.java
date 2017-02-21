@@ -100,7 +100,9 @@ public class DetalleFragment extends Fragment implements DetalleFragmentPresente
         ((TextView) vista.findViewById(autor)).setText(libro.getAutor());
         ((NetworkImageView) vista.findViewById(R.id.portada)).setImageUrl(libro.getUrlImagen(), imgLoader);
         //((ToggleButton) vista.findViewById(R.id.libroLeido)).setActivated(libro.leidoPor(currentUser.getUid()));
-        ((ToggleButton) vista.findViewById(R.id.libroLeido)).setActivated(lecturasSingleton.libroLeido(key));
+        boolean leidoFB = lecturasSingleton.libroLeido(key);
+        Log.d("TRAZA", "Está leído en BBDD => " + leidoFB);
+        ((ToggleButton) vista.findViewById(R.id.libroLeido)).setChecked(leidoFB);
         vista.setOnTouchListener(this);
     }
 

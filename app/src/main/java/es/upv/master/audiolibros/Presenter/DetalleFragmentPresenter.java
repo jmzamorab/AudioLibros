@@ -39,7 +39,7 @@ public class DetalleFragmentPresenter implements OnValueListener, MediaPlayer.On
     public DetalleFragmentPresenter(DetalleFragmentPresenter.View vista) {
         this.zmSk = ((DetalleFragment) vista).getZmSk();
         this.activity = ((DetalleFragment) vista).getActivity();
-        view = vista;
+        this.view = vista;
         librosSingleton = LibrosSingleton.getInstance(this.activity);
         volleySingleton = VolleySingleton.getInstance(this.activity);
     }

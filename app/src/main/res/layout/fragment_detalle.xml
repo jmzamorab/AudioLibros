@@ -58,7 +58,8 @@
             android:layout_below="@id/portada"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="37dp"
-            android:text="Leido" />
+            android:textOn="Leido"
+            android:textOff="No Leido" />
         <es.upv.master.audiolibros.ZoomSeekBar
             android:id="@+id/zsbModifica"
             android:background="#FFFFFF"
